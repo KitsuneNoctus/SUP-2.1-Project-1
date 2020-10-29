@@ -9,6 +9,7 @@ import UIKit
 import QuartzCore
 import SceneKit
 
+
 class GameViewController: UIViewController {
 
     var mainScene: SCNScene!
@@ -30,6 +31,7 @@ class GameViewController: UIViewController {
     func createMainScene() -> SCNScene {
         let mainScene = SCNScene(named: "art.scnassets/hero.dae")
         mainScene!.rootNode.addChildNode(createFloorNode())
+        mainScene!.rootNode.addChildNode(Collectable.pyramidNode())
         return mainScene!
     }
     

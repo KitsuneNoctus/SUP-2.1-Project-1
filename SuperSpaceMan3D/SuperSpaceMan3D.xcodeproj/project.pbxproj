@@ -14,6 +14,7 @@
 		3F57652C254A53E50047B9E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F57652B254A53E50047B9E9 /* Assets.xcassets */; };
 		3F576537254A53E50047B9E9 /* SuperSpaceMan3DTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F576536254A53E50047B9E9 /* SuperSpaceMan3DTests.swift */; };
 		3F576542254A53E50047B9E9 /* SuperSpaceMan3DUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F576541254A53E50047B9E9 /* SuperSpaceMan3DUITests.swift */; };
+		3F576556254A68FB0047B9E9 /* Collectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F576555254A68FB0047B9E9 /* Collectable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		3F57653D254A53E50047B9E9 /* SuperSpaceMan3DUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SuperSpaceMan3DUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F576541254A53E50047B9E9 /* SuperSpaceMan3DUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperSpaceMan3DUITests.swift; sourceTree = "<group>"; };
 		3F576543254A53E50047B9E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F576555254A68FB0047B9E9 /* Collectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collectable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 		3F576521254A53E20047B9E9 /* SuperSpaceMan3D */ = {
 			isa = PBXGroup;
 			children = (
+				3F576555254A68FB0047B9E9 /* Collectable.swift */,
 				3F576522254A53E20047B9E9 /* AppDelegate.swift */,
 				3F576524254A53E20047B9E9 /* art.scnassets */,
 				3F576526254A53E20047B9E9 /* GameViewController.swift */,
@@ -255,6 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F576556254A68FB0047B9E9 /* Collectable.swift in Sources */,
 				3F576527254A53E20047B9E9 /* GameViewController.swift in Sources */,
 				3F576523254A53E20047B9E9 /* AppDelegate.swift in Sources */,
 			);
