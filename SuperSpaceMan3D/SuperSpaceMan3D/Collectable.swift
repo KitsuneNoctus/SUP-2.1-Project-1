@@ -9,6 +9,7 @@ import Foundation
 import SceneKit
 
 class Collectable{
+    //MARK: Pyramid
     class func pyramidNode() -> SCNNode{
         // 1 Creating the SCNGeometry type
         let pyramid = SCNPyramid(width: 3.0, height: 6.0, length: 3.0)
@@ -28,6 +29,7 @@ class Collectable{
         return pyramidNode
     }
     
+    //MARK: Sphere
     class func sphereNode() -> SCNNode{
         // 1 Creating the SCNGeometry type
         let sphere = SCNSphere(radius: 6.0)
@@ -44,9 +46,21 @@ class Collectable{
         sphereNode.geometry?.firstMaterial?.diffuse.contents = UIColor.red
         sphereNode.geometry?.firstMaterial?.shininess = 1.0
         
+        sphereNode.geometry?.firstMaterial?.diffuse.contents = #imageLiteral(resourceName:
+        "earthDiffuse")
+        sphereNode.geometry?.firstMaterial?.ambient.contents = #imageLiteral(resourceName:
+        "earthAmbient")
+        sphereNode.geometry?.firstMaterial?.specular.contents = #imageLiteral(resourceName:
+        "earthSpecular")
+        sphereNode.geometry?.firstMaterial?.normal.contents = #imageLiteral(resourceName:
+        "earthNormal")
+        sphereNode.geometry?.firstMaterial?.diffuse.mipFilter = SCNFilterMode.linear
+        sphereNode.geometry?.firstMaterial?.shininess = 1.0
+        
         return sphereNode
     }
     
+    //MARK: Box
     class func boxNode() -> SCNNode{
         let box = SCNBox(width: 3, height: 3, length: 3, chamferRadius: 0)
         
@@ -59,9 +73,20 @@ class Collectable{
         boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.brown
         boxNode.geometry?.firstMaterial?.shininess = 1.0
         
+        var materials = [SCNMaterial]()
+        let boxImage = "boxSide"
+        for index in 1...6{
+            let material = SCNMaterial()
+            material.diffuse.contents = UIImage(named: boxImage + String(index))
+            materials.append(material)
+        }
+
+        boxNode.geometry?.materials = materials
+        
         return boxNode
     }
     
+    //MARK: Tube
     class func tubeNode() -> SCNNode {
         let tube = SCNTube(innerRadius: 1, outerRadius: 1.5, height: 2)
         
@@ -72,11 +97,12 @@ class Collectable{
         tubeNode.position = position
         
         tubeNode.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
-        tubeNode.geometry?.firstMaterial?.shininess = 1.0
+        tubeNode.geometry?.firstMaterial?.shininess = 9.0
         
         return tubeNode
     }
     
+    //MARK: Cylinder
     class func cylinderNode() -> SCNNode{
         let cylinder = SCNCylinder(radius: 3, height: 8)
         
@@ -92,6 +118,7 @@ class Collectable{
         return cylinderNode
     }
     
+    //MARK: Torus
     class func torusNode() -> SCNNode{
         let torus = SCNTorus(ringRadius: 7, pipeRadius: 2)
         
