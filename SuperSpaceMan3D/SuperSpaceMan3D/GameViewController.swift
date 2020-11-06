@@ -30,8 +30,8 @@ class GameViewController: UIViewController {
         createHeroCamera(mainScene: mainScene)
         
         let sceneView = self.view as! SCNView
-        sceneView.delegate = self
         sceneView.scene = mainScene
+        sceneView.delegate = self
         
         // Optional, but nice to be turned on during developement
         sceneView.showsStatistics = true
@@ -95,22 +95,23 @@ class GameViewController: UIViewController {
 //        mainScene.rootNode.childNode(withName: "hero", recursively: true)?.addChildNode(cameraNode!)
     }
     
-    func createHeroCamera() {
-
-        let cameraNode = mainScene.rootNode.childNode(withName: "mainCamera", recursively: true)
-
-        cameraNode?.camera?.zFar = 1000
-        cameraNode?.position = SCNVector3(x: 0, y: 0, z: -100)
-
-//        cameraNode?.camera?.usesOrthographicProjection = true
-//        cameraNode?.camera?.orthographicScale = 100
-        cameraNode?.eulerAngles = SCNVector3(x: 0, y: 90, z: 0) //Float(-M_PI_4*0.75))
-
-        let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)
-        heroNode?.addChildNode(cameraNode!)
-
-        mainScene.rootNode.childNode(withName: "hero", recursively: true)?.addChildNode(cameraNode!)
-    }
+    //From the repository
+//    func createHeroCamera() {
+//
+//        let cameraNode = mainScene.rootNode.childNode(withName: "mainCamera", recursively: true)
+//
+//        cameraNode?.camera?.zFar = 1000
+//        cameraNode?.position = SCNVector3(x: 0, y: 0, z: -100)
+//
+////        cameraNode?.camera?.usesOrthographicProjection = true
+////        cameraNode?.camera?.orthographicScale = 100
+//        cameraNode?.eulerAngles = SCNVector3(x: 0, y: 90, z: 0) //Float(-M_PI_4*0.75))
+//
+//        let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)
+//        heroNode?.addChildNode(cameraNode!)
+//
+//        mainScene.rootNode.childNode(withName: "hero", recursively: true)?.addChildNode(cameraNode!)
+//    }
     
     func positionCameraWithSpaceman(){
         //You get the hero node using the presentationNode() method so you can get his current position.
@@ -221,7 +222,7 @@ class GameViewController: UIViewController {
 
 //MARK: Extension Scene Render Delegate
 extension GameViewController: SCNSceneRendererDelegate{
-    func renderer(aRenderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval){
+    func renderer(_ renderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval) {
         let moveDistance = Float(10.0)
         let moveSpeed = TimeInterval(1.0)
         let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)
@@ -242,4 +243,5 @@ extension GameViewController: SCNSceneRendererDelegate{
         
         positionCameraWithSpaceman()
     }
+    
 }
