@@ -20,6 +20,10 @@ class GameViewController: UIViewController {
         
         //Create a new scene
         mainScene = createMainScene()
+        
+        createMainCamera()
+        createHeroCamera(mainScene: mainScene)
+        
         let sceneView = self.view as! SCNView
         sceneView.scene = mainScene
         
@@ -39,7 +43,7 @@ class GameViewController: UIViewController {
         mainScene!.rootNode.addChildNode(Collectable.tubeNode())
         mainScene!.rootNode.addChildNode(Collectable.cylinderNode())
         mainScene!.rootNode.addChildNode(Collectable.torusNode())
-        createHeroCamera()
+//        createHeroCamera()
         setupLighting(scene: mainScene!)
         return mainScene!
     }
@@ -53,25 +57,67 @@ class GameViewController: UIViewController {
     }
     
     //MARK: Camera
-    func createHeroCamera(){
-        //        You first initialize the cameraNode as a scene node (SCNNode()).
-        //        After you have the node initialized, you initialize the camera parameter for the node.
+    ///The stuff below is what came first
+//    func createHeroCamera(mainScene:SCNScene) {
+//        let cameraNode = mainScene.rootNode.childNode(withName: "mainCamera", recursively: true)
+//        cameraNode?.camera?.zFar = 500
+//        cameraNode?.position = SCNVector3(x: 50, y: 0, z: -20)
+//        cameraNode?.rotation = SCNVector4(x: 0, y: 0, z: 0, w: Float.pi/4 * 0.5)
+//        cameraNode?.eulerAngles = SCNVector3(x: -70, y: 0, z: 0) //Float(-M_PI_4*0.75))
+//        let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)
+//        heroNode?.addChildNode(cameraNode!)
+//        mainScene.rootNode.childNode(withName: "hero", recursively: true)?.addChildNode(cameraNode!)
+//    }
+    
+    func createHeroCamera(mainScene:SCNScene) {
+        
         let cameraNode = mainScene.rootNode.childNode(withName: "mainCamera", recursively: true)
-        //        For this camera, you will need to set the zFar parameter. The zFar parameter is the maximum distance between the camera and the visible surface.
-        cameraNode?.camera?.zFar = 500
-        //        The camera also needs a position; you’ll set this position to be slightly
-        //        behind and above the spaceman to start with. Later in the game
-        //        development you’ll adjust this position to follow the spaceman around
-        //        the scene.
-        cameraNode?.position = SCNVector3(50, 0, -20)
-        //        You now need to set the rotation of the camera. Currently the camera is pointing straight ahead; however, because you put the camera slightly above your spaceman, you need to rotate it slightly down. This is exactly what setting the w: parameter in the SCNVector4 is doing.
-        cameraNode?.rotation = SCNVector4(0, 0, 0, Float.pi/4 * 0.5)
-        cameraNode?.eulerAngles = SCNVector3(x: -70, y: 0, z: 0) //Float(-M_PI_4*0.75))
+        
+        cameraNode?.camera?.zFar = 1000
+        cameraNode?.position = SCNVector3(x: 0, y: 0, z: -100)
+        
+//        cameraNode?.camera?.usesOrthographicProjection = true
+//        cameraNode?.camera?.orthographicScale = 100
+        cameraNode?.eulerAngles = SCNVector3(x: 0, y: 90, z: 0) //Float(-M_PI_4*0.75))
+        
         let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)
         heroNode?.addChildNode(cameraNode!)
-        
+
         mainScene.rootNode.childNode(withName: "hero", recursively: true)?.addChildNode(cameraNode!)
     }
+    
+    func createHeroCamera() {
+
+        let cameraNode = mainScene.rootNode.childNode(withName: "mainCamera", recursively: true)
+
+        cameraNode?.camera?.zFar = 1000
+        cameraNode?.position = SCNVector3(x: 0, y: 0, z: -100)
+
+//        cameraNode?.camera?.usesOrthographicProjection = true
+//        cameraNode?.camera?.orthographicScale = 100
+        cameraNode?.eulerAngles = SCNVector3(x: 0, y: 90, z: 0) //Float(-M_PI_4*0.75))
+
+        let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)
+        heroNode?.addChildNode(cameraNode!)
+
+        mainScene.rootNode.childNode(withName: "hero", recursively: true)?.addChildNode(cameraNode!)
+    }
+//
+    func createMainCamera() {
+        
+        let cameraNode = SCNNode()
+        cameraNode.name = "mainCamera"
+        cameraNode.camera = SCNCamera()
+        cameraNode.camera?.zFar = 1000
+        cameraNode.position = SCNVector3(x: 0, y: 15, z: 10)
+        cameraNode.rotation = SCNVector4(x: 0, y: 0, z: 0, w: -Float.pi/4 * 0.5) //Float(-M_PI_4*0.75))
+        
+        let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)
+        heroNode?.addChildNode(cameraNode)
+        
+//        mainScene.rootNode.addChildNode(cameraNode)
+    }
+       
     
     //MARK: Lighting
     func setupLighting(scene: SCNScene){
