@@ -8,6 +8,7 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import CoreMotion
 
 
 class GameViewController: UIViewController {
@@ -15,6 +16,10 @@ class GameViewController: UIViewController {
     var mainScene: SCNScene!
     var spotLight: SCNNode!
     
+    var touchCount: Int?
+    
+    
+    //MARK: View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,11 +30,14 @@ class GameViewController: UIViewController {
         createHeroCamera(mainScene: mainScene)
         
         let sceneView = self.view as! SCNView
+        sceneView.delegate = self
         sceneView.scene = mainScene
         
         // Optional, but nice to be turned on during developement
         sceneView.showsStatistics = true
         sceneView.allowsCameraControl = true
+        
+        setupAccelerometer()
         
     }
     
@@ -69,12 +77,13 @@ class GameViewController: UIViewController {
 //        mainScene.rootNode.childNode(withName: "hero", recursively: true)?.addChildNode(cameraNode!)
 //    }
     
+    ///This is what was taken from github created for this book.
     func createHeroCamera(mainScene:SCNScene) {
         
         let cameraNode = mainScene.rootNode.childNode(withName: "mainCamera", recursively: true)
         
-        cameraNode?.camera?.zFar = 1000
-        cameraNode?.position = SCNVector3(x: 0, y: 0, z: -100)
+        cameraNode?.camera?.zFar = 500
+        cameraNode?.position = SCNVector3(x: 50, y: 0, z: -20)
         
 //        cameraNode?.camera?.usesOrthographicProjection = true
 //        cameraNode?.camera?.orthographicScale = 100
@@ -83,7 +92,7 @@ class GameViewController: UIViewController {
         let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)
         heroNode?.addChildNode(cameraNode!)
 
-        mainScene.rootNode.childNode(withName: "hero", recursively: true)?.addChildNode(cameraNode!)
+//        mainScene.rootNode.childNode(withName: "hero", recursively: true)?.addChildNode(cameraNode!)
     }
     
     func createHeroCamera() {
@@ -102,7 +111,27 @@ class GameViewController: UIViewController {
 
         mainScene.rootNode.childNode(withName: "hero", recursively: true)?.addChildNode(cameraNode!)
     }
-//
+    
+    func positionCameraWithSpaceman(){
+        //You get the hero node using the presentationNode() method so you can get his current position.
+        let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)?.presentation
+        let spacemanPosition = heroNode?.position
+        let cameraDamping: Float = 0.3
+        //Next, using a little math and the SCNVector3 initializer, you position the camera above and behind the spaceman.
+        let targetPosition = SCNVector3((spacemanPosition?.x)!, 30.0, (spacemanPosition?.z)! + 20.0)
+        let cameraNode = mainScene.rootNode.childNode(withName: "mainCamera", recursively: true)
+        var cameraPosition = cameraNode?.position
+        
+        let cameraXPos = cameraPosition!.x * (1.0 - cameraDamping) + targetPosition.x * cameraDamping
+        let cameraYPos = cameraPosition!.y * (1.0 - cameraDamping) + targetPosition.y * cameraDamping
+        let cameraZPos = cameraPosition!.z * (1.0 - cameraDamping) + targetPosition.z * cameraDamping
+        
+        cameraPosition = SCNVector3(cameraXPos, cameraYPos, cameraZPos)
+        
+        cameraNode?.position = cameraPosition!
+    }
+    
+    //MARK: Create Main Camera
     func createMainCamera() {
         
         let cameraNode = SCNNode()
@@ -143,5 +172,74 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(lightNode)
     }
     
+    //MARK: Touches
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let taps = event?.allTouches
+        touchCount = taps?.count
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchCount = 0
+    }
+    
+    func setupAccelerometer(){
+        
+        //Create motion manager to recieve the input
+        let motionManager = CMMotionManager()
+        if motionManager.isAccelerometerAvailable{
+            
+            motionManager.accelerometerUpdateInterval = 1/60.0
+            motionManager.startAccelerometerUpdates(to: OperationQueue()){ (data,error) in
+                let heroNode = self.mainScene.rootNode.childNode(withName: "hero",
+                recursively: true)?.presentation
+                
+                //Get current position
+                let currentX = heroNode?.position.x
+                let currentY = heroNode?.position.y
+                let currentZ = heroNode?.position.z
+                let threshold = 0.20
+                //Moving Right
+                if (data?.acceleration.y)! < -threshold{
+                    let destinationX = (Float((data?.acceleration.y)!) * 10.0 - Float(currentX!))
+                    let destinationY = Float(currentY!)
+                    let destinationZ = Float(currentZ!)
+                    let action = SCNAction.move(by: SCNVector3(destinationX, destinationY, destinationZ), duration: 1)
+                    heroNode?.runAction(action)
+                }else if (data?.acceleration.y)! > threshold{
+                    let destinationX = (Float((data?.acceleration.y)!) * 10.0 - Float(currentX!))
+                    let destinationY = Float(currentY!)
+                    let destinationZ = Float(currentZ!)
+                    let action = SCNAction.move(by: SCNVector3(destinationX, destinationY, destinationZ), duration: 1)
+                    heroNode?.runAction(action)
+                }
+            }
+        }
+    }
+    
 
+}
+
+//MARK: Extension Scene Render Delegate
+extension GameViewController: SCNSceneRendererDelegate{
+    func renderer(aRenderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval){
+        let moveDistance = Float(10.0)
+        let moveSpeed = TimeInterval(1.0)
+        let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)
+        let currentX = heroNode?.position.x
+        let currentY = heroNode?.position.y
+        let currentZ = heroNode?.position.z
+        
+        if touchCount == 1{
+            let action = SCNAction.move(to: SCNVector3(currentX!, currentY!, currentZ! - moveDistance), duration: moveSpeed)
+            heroNode?.runAction(action)
+        }else if touchCount == 2{
+            let action = SCNAction.move(to: SCNVector3(currentX!, currentY!, currentZ! + moveDistance), duration: moveSpeed)
+            heroNode?.runAction(action)
+        }else if touchCount == 4{
+            let action = SCNAction.move(to: SCNVector3(0, 0, 0), duration: moveSpeed)
+            heroNode?.runAction(action)
+        }
+        
+        positionCameraWithSpaceman()
+    }
 }
