@@ -16,7 +16,10 @@ class GameViewController: UIViewController {
     var mainScene: SCNScene!
     var spotLight: SCNNode!
     
-    var touchCount: Int?
+    var touchCount: Int? = 0
+    
+    var gameOverlay: GameOverlay!
+    var gameStarted = false
     
     
     //MARK: View Did Load
@@ -32,6 +35,9 @@ class GameViewController: UIViewController {
         let sceneView = self.view as! SCNView
         sceneView.scene = mainScene
         sceneView.delegate = self
+        
+        sceneView.overlaySKScene = GameOverlay(size:view.frame.size)
+        gameOverlay = sceneView.overlaySKScene as! GameOverlay
         
         // Optional, but nice to be turned on during developement
         sceneView.showsStatistics = true
@@ -229,6 +235,11 @@ class GameViewController: UIViewController {
 //MARK: Extension Scene Render Delegate
 extension GameViewController: SCNSceneRendererDelegate{
     func renderer(_ renderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval) {
+        if touchCount! > 0 && !gameStarted{
+            gameOverlay.startTimer()
+            gameStarted = true
+        }
+        
         let moveDistance = Float(10.0)
         let moveSpeed = TimeInterval(1.0)
         let heroNode = mainScene.rootNode.childNode(withName: "hero", recursively: true)
@@ -264,6 +275,12 @@ extension GameViewController: SCNPhysicsContactDelegate{
             print("Hit a high value collectible.")
         default:
             print("Hit something other than a collectible.")
+        }
+        
+        if gameOverlay.score >= 50 {
+            gameOverlay.stopTimer()
+            
+//            sceneView.overlaySKScene = GameOverView(size: view.bounds.size, score:String(gameOverlay.score))
         }
     }
     func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
