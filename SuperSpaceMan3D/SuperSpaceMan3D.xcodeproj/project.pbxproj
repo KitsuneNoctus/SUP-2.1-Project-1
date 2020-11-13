@@ -18,6 +18,7 @@
 		3FEA49C9255E5C5900661963 /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA49C8255E5C5900661963 /* SharedConstants.swift */; };
 		3FEA49CE255E60B600661963 /* GameOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA49CD255E60B600661963 /* GameOverlay.swift */; };
 		3FEA49D3255E683400661963 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEA49D2255E683400661963 /* GameOverView.swift */; };
+		3FEA49DB255E69BE00661963 /* Level1.scn in Resources */ = {isa = PBXBuildFile; fileRef = 3FEA49DA255E69BE00661963 /* Level1.scn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		3FEA49C8255E5C5900661963 /* SharedConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedConstants.swift; sourceTree = "<group>"; };
 		3FEA49CD255E60B600661963 /* GameOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverlay.swift; sourceTree = "<group>"; };
 		3FEA49D2255E683400661963 /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
+		3FEA49DA255E69BE00661963 /* Level1.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Level1.scn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 				3F576528254A53E20047B9E9 /* Main.storyboard */,
 				3F57652B254A53E50047B9E9 /* Assets.xcassets */,
 				3F57652D254A53E50047B9E9 /* Info.plist */,
+				3FEA49DA255E69BE00661963 /* Level1.scn */,
 			);
 			path = SuperSpaceMan3D;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F576525254A53E20047B9E9 /* art.scnassets in Resources */,
+				3FEA49DB255E69BE00661963 /* Level1.scn in Resources */,
 				3F57652C254A53E50047B9E9 /* Assets.xcassets in Resources */,
 				3F57652A254A53E20047B9E9 /* Main.storyboard in Resources */,
 			);
