@@ -53,6 +53,12 @@ class GameViewController: UIViewController {
         mainScene!.rootNode.addChildNode(Collectable.torusNode())
 //        createHeroCamera()
         setupLighting(scene: mainScene!)
+        let heroNode = mainScene?.rootNode.childNode(withName: "hero", recursively: true)
+        heroNode?.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        heroNode?.physicsBody?.categoryBitMask = CollisionCategoryHero
+        heroNode?.physicsBody?.collisionBitMask = CollisionCategoryCollectibleLowValue | CollisionCategoryCollectibleMidValue | CollisionCategoryCollectibleHighValue
+        
+        mainScene?.physicsWorld.contactDelegate = self
         return mainScene!
     }
     
@@ -60,7 +66,7 @@ class GameViewController: UIViewController {
         let floorNode = SCNNode()
         floorNode.geometry = SCNFloor()
         floorNode.geometry?.firstMaterial?.diffuse.contents = "Floor"
-        
+        floorNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
         return floorNode
     }
     
@@ -244,4 +250,26 @@ extension GameViewController: SCNSceneRendererDelegate{
         positionCameraWithSpaceman()
     }
     
+}
+
+//MARK: Extension Physics Contact Delegate
+extension GameViewController: SCNPhysicsContactDelegate{
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        switch contact.nodeB.physicsBody!.collisionBitMask {
+        case CollisionCategoryCollectibleLowValue:
+            print("Hit a low value collectible.")
+        case CollisionCategoryCollectibleMidValue:
+            print("Hit a mid value collectible.")
+        case CollisionCategoryCollectibleHighValue:
+            print("Hit a high value collectible.")
+        default:
+            print("Hit something other than a collectible.")
+        }
+    }
+    func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
+        print("didEndContact")
+    }
+    func physicsWorld(_ world: SCNPhysicsWorld, didUpdate contact: SCNPhysicsContact) {
+        print("didUpdateContact")
+    }
 }

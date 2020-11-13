@@ -26,6 +26,10 @@ class Collectable{
         pyramidNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
         pyramidNode.geometry?.firstMaterial?.shininess = 1.0
         
+        pyramidNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        pyramidNode.physicsBody?.categoryBitMask = CollisionCategoryCollectibleLowValue
+        pyramidNode.physicsBody?.collisionBitMask = CollisionCategoryHero
+        
         return pyramidNode
     }
     
@@ -57,6 +61,10 @@ class Collectable{
         sphereNode.geometry?.firstMaterial?.diffuse.mipFilter = SCNFilterMode.linear
         sphereNode.geometry?.firstMaterial?.shininess = 1.0
         
+        sphereNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        sphereNode.physicsBody?.categoryBitMask = CollisionCategoryCollectibleHighValue
+        sphereNode.physicsBody?.collisionBitMask = CollisionCategoryHero
+        
         return sphereNode
     }
     
@@ -83,6 +91,10 @@ class Collectable{
 
         boxNode.geometry?.materials = materials
         
+        boxNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        boxNode.physicsBody?.categoryBitMask = CollisionCategoryCollectibleMidValue
+        boxNode.physicsBody?.collisionBitMask = CollisionCategoryHero
+        
         return boxNode
     }
     
@@ -98,6 +110,10 @@ class Collectable{
         
         tubeNode.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
         tubeNode.geometry?.firstMaterial?.shininess = 9.0
+        
+        tubeNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        tubeNode.physicsBody?.categoryBitMask = CollisionCategoryCollectibleLowValue
+        tubeNode.physicsBody?.collisionBitMask = CollisionCategoryHero
         
         return tubeNode
     }
@@ -115,6 +131,10 @@ class Collectable{
         cylinderNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
         cylinderNode.geometry?.firstMaterial?.shininess = 1.0
         
+        cylinderNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        cylinderNode.physicsBody?.categoryBitMask = CollisionCategoryCollectibleHighValue
+        cylinderNode.physicsBody?.collisionBitMask = CollisionCategoryHero
+        
         return cylinderNode
     }
     
@@ -130,6 +150,10 @@ class Collectable{
         
         torusNode.geometry?.firstMaterial?.diffuse.contents = UIColor.orange
         torusNode.geometry?.firstMaterial?.shininess = 1.0
+        
+        torusNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        torusNode.physicsBody?.categoryBitMask = CollisionCategoryCollectibleMidValue
+        torusNode.physicsBody?.collisionBitMask = CollisionCategoryHero
         
         return torusNode
     }
